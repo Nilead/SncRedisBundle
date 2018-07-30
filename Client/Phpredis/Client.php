@@ -114,7 +114,7 @@ class Client extends Redis
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value, $timeout = NULL, $opt = NULL)
+    public function set($key, $value, $timeout = NULL)
     {
         return $this->call('set', func_get_args());
     }
