@@ -751,14 +751,14 @@ class Client extends Redis
     /**
      * {@inheritdoc}
      */
-    public function flushDB()
+    public function flushDB($async = NULL)
     {
         return $this->call('flushDB', func_get_args());
     }
     /**
      * {@inheritdoc}
      */
-    public function flushAll()
+    public function flushAll($async = NULL)
     {
         return $this->call('flushAll', func_get_args());
     }
