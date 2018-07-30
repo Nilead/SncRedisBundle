@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the SncRedisBundle package.
  *
@@ -10,12 +9,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Snc\RedisBundle\Client\Phpredis;
-
 use Redis;
 use Snc\RedisBundle\Logger\RedisLogger;
-
 /**
  * PHP Redis client with logger.
  *
@@ -29,12 +25,10 @@ class Client extends Redis
      * @var RedisLogger
      */
     protected $logger;
-
     /**
      * @var string
      */
     protected $alias;
-
     /**
      * Constructor.
      *
@@ -46,7 +40,6 @@ class Client extends Redis
         $this->logger = $logger;
         $this->alias = isset($parameters['alias']) ? $parameters['alias'] : '';
     }
-
     /**
      * Proxy function.
      *
@@ -69,7 +62,6 @@ class Client extends Redis
 
         return $result;
     }
-
     /**
      * Returns a string representation of the given command including arguments.
      *
@@ -82,10 +74,8 @@ class Client extends Redis
     {
         $list = array();
         $this->flatten($arguments, $list);
-
         return trim(strtoupper($command).' '.implode(' ', $list));
     }
-
     /**
      * Flatten arguments to single dimension array.
      *
@@ -98,7 +88,6 @@ class Client extends Redis
             if (!is_numeric($key)) {
                 $list[] = $key;
             }
-
             if (is_scalar($item)) {
                 $list[] = strval($item);
             } elseif (null === $item) {
@@ -108,7 +97,6 @@ class Client extends Redis
             }
         }
     }
-
     /**
      * {@inheritdoc}
      */
@@ -116,55 +104,48 @@ class Client extends Redis
     {
         return $this->call('ping', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function get($key)
     {
         return $this->call('get', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function set()
+    public function set($key, $value, $timeout = NULL, $opt = NULL)
     {
         return $this->call('set', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setEx()
+    public function setEx($key, $expire, $value)
     {
         return $this->call('setEx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setNx()
+    public function setNx($key, $value)
     {
         return $this->call('setNx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function del()
+    public function del($key, ...$other_keys)
     {
         return $this->call('del', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function delete()
+    public function delete($key, ...$other_keys)
     {
         return $this->call('delete', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -172,7 +153,6 @@ class Client extends Redis
     {
         return $this->call('multi', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -180,7 +160,6 @@ class Client extends Redis
     {
         return $this->call('exec', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -188,15 +167,13 @@ class Client extends Redis
     {
         return $this->call('discard', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function watch()
+    public function watch($key, ...$other_keys)
     {
         return $this->call('watch', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -204,407 +181,356 @@ class Client extends Redis
     {
         return $this->call('unwatch', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function subscribe()
+    public function subscribe(array $channels)
     {
         return $this->call('subscribe', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pSubscribe()
+    public function pSubscribe(array $patterns)
     {
         return $this->call('psubscribe', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function publish()
+    public function publish($channel, $message)
     {
         return $this->call('publish', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pubsub()
+    public function pubsub($cmd, ...$args)
     {
         return $this->call('pubsub', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function exists()
+    public function exists($key, ...$other_keys)
     {
         return $this->call('exists', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function incr()
+    public function incr($key)
     {
         return $this->call('incr', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function incrByFloat()
+    public function incrByFloat($key, $value)
     {
         return $this->call('incrByFloat', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function incrBy()
+    public function incrBy($key, $value)
     {
         return $this->call('incrBy', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function decr()
+    public function decr($key)
     {
         return $this->call('decr', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function decrBy()
+    public function decrBy($key, $value)
     {
         return $this->call('decrBy', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getMultiple()
+    public function getMultiple(array $keys)
     {
         return $this->call('getMultiple', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lPush()
+    public function lPush($key, $value)
     {
         return $this->call('lPush', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rPush()
+    public function rPush($key, $value)
     {
         return $this->call('rPush', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lPushx()
+    public function lPushx($key, $value)
     {
         return $this->call('lPushx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rPushx()
+    public function rPushx($key, $value)
     {
         return $this->call('rPushx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lPop()
+    public function lPop($key)
     {
         return $this->call('lPop', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rPop()
+    public function rPop($key)
     {
         return $this->call('rPop', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function blPop()
+    public function blPop($key, $timeout_or_key, ...$extra_args)
     {
         return $this->call('blPop', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function brPop()
+    public function brPop($key, $timeout_or_key, ...$extra_args)
     {
         return $this->call('brPop', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lLen()
+    public function lLen($key)
     {
         return $this->call('lLen', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lSize()
+    public function lSize($key)
     {
         return $this->call('lSize', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lIndex()
+    public function lIndex($key, $index)
     {
         return $this->call('lIndex', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lGet()
+    public function lGet($key, $index)
     {
         return $this->call('lGet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lSet()
+    public function lSet($key, $index, $value)
     {
         return $this->call('lSet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lRange()
+    public function lRange($key, $start, $end)
     {
         return $this->call('lRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lGetRange()
+    public function lGetRange($key, $start, $end)
     {
         return $this->call('lGetRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lTrim()
+    public function lTrim($key, $start, $stop)
     {
         return $this->call('lTrim', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function listTrim()
+    public function listTrim($key, $start, $stop)
     {
         return $this->call('listTrim', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lRem()
+    public function lRem($key, $value, $count)
     {
         return $this->call('lRem', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lRemove()
+    public function lRemove($key, $value, $count)
     {
         return $this->call('lRemove', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function lInsert()
+    public function lInsert($key, $position, $pivot, $value)
     {
         return $this->call('lInsert', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sAdd()
+    public function sAdd($key, $value)
     {
         return $this->call('sAdd', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sRem()
+    public function sRem($key, $value)
     {
         return $this->call('sRem', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sRemove()
+    public function sRemove($key, $value)
     {
         return $this->call('sRemove', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sMove()
+    public function sMove($src, $dst, $value)
     {
         return $this->call('sMove', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sIsMember()
+    public function sIsMember($key, $value)
     {
         return $this->call('sIsMember', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sContains()
+    public function sContains($key, $value)
     {
         return $this->call('sContains', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sCard()
+    public function sCard($key)
     {
         return $this->call('sCard', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sPop()
+    public function sPop($key)
     {
         return $this->call('sPop', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sRandMember()
+    public function sRandMember($key, $count = NULL)
     {
         return $this->call('sRandMember', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sInter()
+    public function sInter($key, ...$other_keys)
     {
         return $this->call('sInter', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sInterStore()
+    public function sInterStore($dst, $key, ...$other_keys)
     {
         return $this->call('sInterStore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sUnion()
+    public function sUnion($key, ...$other_keys)
     {
         return $this->call('sUnion', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sUnionStore()
+    public function sUnionStore($dst, $key, ...$other_keys)
     {
         return $this->call('sUnionStore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sDiff()
+    public function sDiff($key, ...$other_keys)
     {
         return $this->call('sDiff', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sDiffStore()
+    public function sDiffStore($dst, $key, ...$other_keys)
     {
         return $this->call('sDiffStore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sMembers()
+    public function sMembers($key)
     {
         return $this->call('sMembers', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sGetMembers()
+    public function sGetMembers($key)
     {
         return $this->call('sGetMembers', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
     public function sScan($key, &$iterator, $pattern = null, $count = null)
     {
-        return $this->call('sScan', array($key, &$iterator, $pattern, $count));
+        return $this->call('sScan', array($key, $iterator, $pattern, $count));
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getSet()
+    public function getSet($key, $value)
     {
         return $this->call('getSet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -612,95 +538,83 @@ class Client extends Redis
     {
         return $this->call('randomKey', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function move()
+    public function move($key, $dbindex)
     {
         return $this->call('move', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rename()
+    public function rename($key, $newkey)
     {
         return $this->call('rename', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function renameKey()
+    public function renameKey($key, $newkey)
     {
         return $this->call('renameKey', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function renameNx()
+    public function renameNx($key, $newkey)
     {
         return $this->call('renameNx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function expire()
+    public function expire($key, $timeout)
     {
         return $this->call('expire', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pExpire()
+    public function pExpire($key, $timestamp)
     {
         return $this->call('pExpire', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setTimeout()
+    public function setTimeout($key, $timeout)
     {
         return $this->call('setTimeout', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function expireAt()
+    public function expireAt($key, $timestamp)
     {
         return $this->call('expireAt', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pExpireAt()
+    public function pExpireAt($key, $timestamp)
     {
         return $this->call('pExpireAt', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function keys()
+    public function keys($pattern)
     {
         return $this->call('keys', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getKeys()
+    public function getKeys($pattern)
     {
         return $this->call('getKeys', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -708,7 +622,6 @@ class Client extends Redis
     {
         return $this->call('dbSize', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -716,23 +629,20 @@ class Client extends Redis
     {
         return $this->call('bgrewriteaof', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function slaveof()
+    public function slaveof($host = NULL, $port = NULL)
     {
         return $this->call('slaveof', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function object()
+    public function object($field, $key)
     {
         return $this->call('object', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -740,7 +650,6 @@ class Client extends Redis
     {
         return $this->call('save', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -748,7 +657,6 @@ class Client extends Redis
     {
         return $this->call('bgsave', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -756,103 +664,90 @@ class Client extends Redis
     {
         return $this->call('lastSave', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function wait()
+    public function wait($numslaves, $timeout)
     {
         return $this->call('wait', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function type()
+    public function type($key)
     {
         return $this->call('type', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function append()
+    public function append($key, $value)
     {
         return $this->call('append', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getRange()
+    public function getRange($key, $start, $end)
     {
         return $this->call('getRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function substr()
+    public function substr($key, $start, $end)
     {
         return $this->call('substr', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setRange()
+    public function setRange($key, $offset, $value)
     {
         return $this->call('setRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function strlen()
+    public function strlen($key)
     {
         return $this->call('strlen', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function bitpos()
+    public function bitpos($key, $bit, $start = NULL, $end = NULL)
     {
         return $this->call('bitpos', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getBit()
+    public function getBit($key, $offset)
     {
         return $this->call('getBit', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setBit()
+    public function setBit($key, $offset, $value)
     {
         return $this->call('setBit', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function bitCount()
+    public function bitCount($key)
     {
         return $this->call('bitCount', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function bitOp()
+    public function bitOp($operation, $ret_key, $key, ...$other_keys)
     {
         return $this->call('bitOp', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -860,7 +755,6 @@ class Client extends Redis
     {
         return $this->call('flushDB', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -868,23 +762,20 @@ class Client extends Redis
     {
         return $this->call('flushAll', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function sort()
+    public function sort($key, array $options = NULL)
     {
         return $this->call('sort', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function info()
+    public function info($option = NULL)
     {
         return $this->call('info', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -892,247 +783,216 @@ class Client extends Redis
     {
         return $this->call('resetStat', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function ttl()
+    public function ttl($key)
     {
         return $this->call('ttl', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pttl()
+    public function pttl($key)
     {
         return $this->call('pttl', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function persist()
+    public function persist($key)
     {
         return $this->call('persist', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function mset()
+    public function mset(array $pairs)
     {
         return $this->call('mset', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function mget()
+    public function mget(array $keys)
     {
         return $this->call('mget', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function msetnx()
+    public function msetnx(array $pairs)
     {
         return $this->call('msetnx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rpoplpush()
+    public function rpoplpush($src, $dst)
     {
         return $this->call('rpoplpush', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function brpoplpush()
+    public function brpoplpush($src, $dst, $timeout)
     {
         return $this->call('brpoplpush', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zAdd()
+    public function zAdd($key, $score, $value)
     {
         return $this->call('zAdd', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRange()
+    public function zRange($key, $start, $end, $scores = NULL)
     {
         return $this->call('zRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRem()
+    public function zRem($key, $member, ...$other_member)
     {
         return $this->call('zRem', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zDelete()
+    public function zDelete($key, $member, ...$other_members)
     {
         return $this->call('zDelete', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRevRange()
+    public function zRevRange($key, $start, $end, $scores = NULL)
     {
         return $this->call('zRevRange', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRangeByScore()
+    public function zRangeByScore($key, $start, $end, array $options = NULL)
     {
         return $this->call('zRangeByScore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRevRangeByScore()
+    public function zRevRangeByScore($key, $start, $end, array $options = NULL)
     {
         return $this->call('zRevRangeByScore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRangeByLex()
+    public function zRangeByLex($key, $min, $max, $offset = NULL, $limit = NULL)
     {
         return $this->call('zRangeByLex', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRevRangeByLex()
+    public function zRevRangeByLex($key, $min, $max, $offset = NULL, $limit = NULL)
     {
         return $this->call('zRevRangeByLex', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zCount()
+    public function zCount($key, $min, $max)
     {
         return $this->call('zCount', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRemRangeByScore()
+    public function zRemRangeByScore($key, $min, $max)
     {
         return $this->call('zRemRangeByScore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zDeleteRangeByScore()
+    public function zDeleteRangeByScore($key, $min, $max)
     {
         return $this->call('zDeleteRangeByScore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRemRangeByRank()
+    public function zRemRangeByRank($key, $min, $max)
     {
         return $this->call('zRemRangeByRank', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zDeleteRangeByRank()
+    public function zDeleteRangeByRank($key, $start, $end)
     {
         return $this->call('zDeleteRangeByRank', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zCard()
+    public function zCard($key)
     {
         return $this->call('zCard', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zSize()
+    public function zSize($key)
     {
         return $this->call('zSize', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zScore()
+    public function zScore($key, $member)
     {
         return $this->call('zScore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRank()
+    public function zRank($key, $membe)
     {
         return $this->call('zRank', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zRevRank()
+    public function zRevRank($key, $member)
     {
         return $this->call('zRevRank', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zIncrBy()
+    public function zIncrBy($key, $value, $membe)
     {
         return $this->call('zIncrBy', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zUnion()
+    public function zUnion($key, array $keys, ?array $weights = NULL, $aggregate = NULL)
     {
         return $this->call('zUnion', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function zInter()
+    public function zInter($key, array $keys, ?array $weights = NULL, $aggregate = NULL)
     {
         return $this->call('zInter', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -1140,159 +1000,139 @@ class Client extends Redis
     {
         return $this->call('zScan', array($key, &$iterator, $pattern, $count));
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hSet()
+    public function hSet($key, $member, $value)
     {
         return $this->call('hSet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hSetNx()
+    public function hSetNx($key, $member, $value)
     {
         return $this->call('hSetNx', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hGet()
+    public function hGet($key, $member)
     {
         return $this->call('hGet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hLen()
+    public function hLen($key)
     {
         return $this->call('hLen', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hDel()
+    public function hDel($key, $member, ...$other_members)
     {
         return $this->call('hDel', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hKeys()
+    public function hKeys($key)
     {
         return $this->call('hKeys', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hVals()
+    public function hVals($key)
     {
         return $this->call('hVals', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hGetAll()
+    public function hGetAll($key)
     {
         return $this->call('hGetAll', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hExists()
+    public function hExists($key, $member)
     {
         return $this->call('hExists', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hIncrBy()
+    public function hIncrBy($key, $member, $value)
     {
         return $this->call('hIncrBy', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hIncrByFloat()
+    public function hIncrByFloat($key, $member, $value)
     {
         return $this->call('hIncrByFloat', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hMset()
+    public function hMset($key, array $pairs)
     {
         return $this->call('hMset', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function hMGet()
+    public function hMGet($key, array $keys)
     {
         return $this->call('hMGet', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
     public function hScan($key, &$iterator, $pattern = null, $count = null)
     {
-        return $this->call('hScan', array($key, &$iterator, $pattern, $count));
+        return $this->call('hScan', array($key, $iterator, $pattern, $count));
     }
-
     /**
      * {@inheritdoc}
      */
-    public function config()
+    public function config($cmd, $key, $value = NULL)
     {
         return $this->call('config', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function evaluate()
+    public function evaluate($script, $args = NULL, $num_keys = NULL)
     {
         return $this->call('evaluate', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function evalSha()
+    public function evalSha($script_sha, $args = NULL, $num_keys = NULL)
     {
         return $this->call('evalSha', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function evaluateSha()
+    public function evaluateSha($script_sha, $args = NULL, $num_keys = NULL)
     {
         return $this->call('evaluateSha', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function script()
+    public function script($cmd, ...$args)
     {
         return $this->call('script', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -1300,7 +1140,6 @@ class Client extends Redis
     {
         return $this->call('getLastError', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -1308,31 +1147,27 @@ class Client extends Redis
     {
         return $this->call('clearLastError', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function dump()
+    public function dump($key)
     {
         return $this->call('dump', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function restore()
+    public function restore($ttl, $key, $value)
     {
         return $this->call('restore', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function migrate()
+    public function migrate($host, $port, $key, $db, $timeout, $copy = NULL, $replace = NULL)
     {
         return $this->call('migrate', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -1340,7 +1175,6 @@ class Client extends Redis
     {
         return $this->call('time', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
@@ -1348,39 +1182,34 @@ class Client extends Redis
     {
         return $this->call('scan', array(&$iterator, $pattern, $count));
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pfAdd()
+    public function pfAdd($key, array $elements)
     {
         return $this->call('pfAdd', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pfCount()
+    public function pfCount($key)
     {
         return $this->call('pfCount', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function pfMerge()
+    public function pfMerge($dstkey, array $keys)
     {
         return $this->call('pfMerge', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
-    public function rawCommand()
+    public function rawCommand($cmd, ...$args)
     {
         return $this->call('rawCommand', func_get_args());
     }
-
     /**
      * {@inheritdoc}
      */
