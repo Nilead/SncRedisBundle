@@ -1,4 +1,4 @@
-# RedisBundle ![project status](https://img.shields.io/maintenance/yes/2018.svg) [![build status](https://secure.travis-ci.org/snc/SncRedisBundle.png?branch=master)](https://secure.travis-ci.org/snc/SncRedisBundle) #
+# RedisBundle ![project status](https://img.shields.io/maintenance/yes/2018.svg) [![Build Status](https://travis-ci.org/snc/SncRedisBundle.svg?branch=master)](https://travis-ci.org/snc/SncRedisBundle) #
 
 ## About ##
 
@@ -380,7 +380,22 @@ snc_redis:
         ttl: 3600
 ```
 
-## Troubleshooting ##
+## Usage with `symfony/web-profiler-bundle`
+
+If you are using [`symfony/web-profiler-bundle`](https://github.com/symfony/web-profiler-bundle)
+and want to inspect commands sent by a configured Redis client, logging needs to be enabled for that client.
+
+``` yaml
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://localhost/
+            logging: '%kernel.debug%'
+```
+
+## Troubleshooting
 
 If cache warmup fails for prod because a redis server is not available,
 try to install [`symfony/proxy-manager-bridge`](https://symfony.com/doc/master/service_container/lazy_services.html):

@@ -2,16 +2,23 @@
     "name": "snc/redis-bundle",
     "type": "symfony-bundle",
     "description": "A Redis bundle for Symfony",
-    "keywords": ["redis", "nosql", "symfony"],
+    "keywords": [
+        "redis",
+        "nosql",
+        "symfony"
+    ],
     "homepage": "https://github.com/snc/SncRedisBundle",
     "license": "MIT",
-    "authors": [{
-        "name": "Henrik Westphal",
-        "email": "henrik.westphal@gmail.com"
-    },{
-        "name": "Community contributors",
-        "homepage": "https://github.com/snc/SncRedisBundle/contributors"
-    }],
+    "authors": [
+        {
+            "name": "Henrik Westphal",
+            "email": "henrik.westphal@gmail.com"
+        },
+        {
+            "name": "Community contributors",
+            "homepage": "https://github.com/snc/SncRedisBundle/contributors"
+        }
+    ],
     "require": {
         "php": "^7.0",
         "symfony/framework-bundle": "^3.4 || ^4.0",
@@ -29,6 +36,7 @@
         "symfony/console": "^3.4 || ^4.0",
         "symfony/phpunit-bridge": "^3.4 || ^4.0",
         "symfony/profiler-pack": "^1.0",
+        "symfony/swiftmailer-bundle": "^2.0 || ^3.0",
         "symfony/twig-bundle": "^3.4 || ^4.0"
     },
     "suggest": {
@@ -36,9 +44,6 @@
         "predis/predis": "If you want to use predis.",
         "symfony/console": "If you want to use commands to interact with the redis database",
         "symfony/proxy-manager-bridge": "If you want to lazy-load some services"
-    },
-    "autoload": {
-        "psr-4": { "Snc\\RedisBundle\\": "" }
     },
     "config": {
         "bin-dir": "bin/",
@@ -48,5 +53,13 @@
         "branch-alias": {
             "dev-master": "3.x-dev"
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "Snc\\RedisBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     }
 }
